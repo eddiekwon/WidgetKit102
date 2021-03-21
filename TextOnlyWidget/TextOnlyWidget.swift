@@ -8,35 +8,37 @@
 import WidgetKit
 import SwiftUI
 
+let globalEntry = WidgetContentEntry(name: "global name")
+
 struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date())
+    func placeholder(in context: Context) -> WidgetContentEntry {
+        globalEntry
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date())
+    func getSnapshot(in context: Context, completion: @escaping (WidgetContentEntry) -> ()) {
+        let entry = globalEntry
         completion(entry)
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        var entries: [SimpleEntry] = []
+        var entries = [globalEntry]
 
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate)
-            entries.append(entry)
-        }
-
+//        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
+//        let currentDate = Date()
+//        for hourOffset in 0 ..< 5 {
+//            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
+//            let entry = WidgetContentEntry(date: entryDate)
+//            entries.append(entry)
+//        }
+//
         let timeline = Timeline(entries: entries, policy: .atEnd)
         completion(timeline)
     }
 }
 
-struct SimpleEntry: TimelineEntry {
-    let date: Date
-}
+//struct WidgetContentEntry: TimelineEntry {
+//    let date: Date
+//}
 
 struct TextOnlyWidgetEntryView : View {
     var entry: Provider.Entry
@@ -53,7 +55,7 @@ struct TextOnlyWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             // 다른 view말고 아래만 일단 표시해보자.
-            TextOnlyView()
+            EntryView(entry: entry)
         }
         .configurationDisplayName("My Widget")
         .description("This is an example widget.")
@@ -61,9 +63,9 @@ struct TextOnlyWidget: Widget {
     }
 }
 
-struct TextOnlyWidget_Previews: PreviewProvider {
-    static var previews: some View {
-        TextOnlyWidgetEntryView(entry: SimpleEntry(date: Date()))
-            .previewContext(WidgetPreviewContext(family: .systemSmall))
-    }
-}
+//struct TextOnlyWidget_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TextOnlyWidgetEntryView(entry: WidgetContentEntry(date: Date()))
+//            .previewContext(WidgetPreviewContext(family: .systemSmall))
+//    }
+//}
