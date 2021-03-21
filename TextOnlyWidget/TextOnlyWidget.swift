@@ -35,11 +35,6 @@ struct Provider: TimelineProvider {
         completion(timeline)
     }
 }
-
-//struct WidgetContentEntry: TimelineEntry {
-//    let date: Date
-//}
-
 struct TextOnlyWidgetEntryView : View {
     var entry: Provider.Entry
 
