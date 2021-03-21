@@ -1,8 +1,8 @@
 //
-//  CountryWidget.swift
-//  CountryWidget
+//  TextOnlyWidget.swift
+//  TextOnlyWidget
 //
-//  Created by muzna on 2021/03/20.
+//  Created by muzna on 2021/03/21.
 //
 
 import WidgetKit
@@ -38,7 +38,7 @@ struct SimpleEntry: TimelineEntry {
     let date: Date
 }
 
-struct CountryWidgetEntryView : View {
+struct TextOnlyWidgetEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
@@ -47,34 +47,23 @@ struct CountryWidgetEntryView : View {
 }
 
 @main
-struct CountryWidget: Widget {
-    let kind: String = "Hello2CountryWidget"
+struct TextOnlyWidget: Widget {
+    let kind: String = "TextOnlyWidget"
 
     var body: some WidgetConfiguration {
-        
-        StaticConfiguration(kind: kind, provider: Provider(), content: { entry in
-            CountryWidgetEntryView(entry: entry)
-        })
-        .configurationDisplayName("Hello3 Widget")
-        .description("This is an example widget.")
-        .onBackgroundURLSessionEvents { (<#String#>, <#@escaping () -> Void#>) in
-            <#code#>
+        StaticConfiguration(kind: kind, provider: Provider()) { entry in
+            // 다른 view말고 아래만 일단 표시해보자.
+            TextOnlyView()
         }
-        /*
-         kind: 고유한 identifier값
-         provider: A timeline provider object라고함. WidgetKit이 위젯을 표시할 때, timestamped entries를 공급해주는 역할
-         content 클로져: timeline entry를 표시해주기 위한 swiftUI를 반환함
-         
-         아래에 붙는 옵션들은 modifier라고 함:
-         .configurationDisplayName
-         .description
-         */
+        .configurationDisplayName("My Widget")
+        .description("This is an example widget.")
+        .supportedFamilies([.systemMedium]) //medium size만 나오게 함
     }
 }
 
-struct CountryWidget_Previews: PreviewProvider {
+struct TextOnlyWidget_Previews: PreviewProvider {
     static var previews: some View {
-        CountryWidgetEntryView(entry: SimpleEntry(date: Date()))
+        TextOnlyWidgetEntryView(entry: SimpleEntry(date: Date()))
             .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }
